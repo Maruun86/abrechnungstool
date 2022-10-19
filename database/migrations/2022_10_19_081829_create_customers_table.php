@@ -13,8 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('rfids', function (Blueprint $table) {
+        Schema::create('customers', function (Blueprint $table) {
             $table->id();
+            $table->string('vorname');
+            $table->string('nachname');
+            $table->string('email');
+            $table->foreignId('rfid_id')->constrained()->cascadeOnDelete();;
+            $table->boolean('active');
         });
     }
 
@@ -25,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rfids');
+        Schema::dropIfExists('customers');
     }
 };

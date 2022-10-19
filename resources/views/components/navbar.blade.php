@@ -18,7 +18,7 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <li><a class="dropdown-item" href="{{route('LIST_LAYOUTS')}}">Layouts</a></li>
-              <li><a class="dropdown-item" href="#">Kunden</a></li>
+              <li><a class="dropdown-item" href="{{route('LIST_CUSTOMERS')}}">Kunden</a></li>
               <li><a class="dropdown-item" href="{{route('LIST_VENDORS')}}">Vendor</a></li>
               <li><a class="dropdown-item" href="{{route('LIST_ITEMS')}}">Items</a></li>
             </ul>

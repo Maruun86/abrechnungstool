@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('access', function (Blueprint $table) {
+        Schema::create('accesses', function (Blueprint $table) {
             $table->id();
         });
     }

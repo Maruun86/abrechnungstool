@@ -8,6 +8,7 @@ use App\Models\Vat;
 use App\Models\Item;
 use App\Models\Layout;
 use App\Models\Vendor;
+use App\Models\Customer;
 use App\Models\ItemVendor;
 use App\Models\VendorItem;
 use Illuminate\Database\Seeder;
@@ -31,6 +32,11 @@ class DatabaseSeeder extends Seeder
         #
         $layoutNames = ['Getränke','Speisen','Garderobe','Merchandise','Photos','Infostand'];
         $layoutViews = ['getraenke','speisen','garderobe','merchandise','photos','infostand'];
+        Layout::factory()->create([
+            'name' => 'Kein Layout',
+            'view_path' => 'no_layout'
+        ]);
+
         for ($i=0; $i < 20; $i++) { 
             $rand = rand(0,5);
             $layout = Layout::factory()->create([
@@ -42,13 +48,13 @@ class DatabaseSeeder extends Seeder
             ]);
           
         }
-        Vat::factory(10)->create();
+        Vat::factory(10)->create(); 
         Item::factory(20)->create();
 
         foreach (Item::all() as $item) {
             $vats = Vat::inRandomOrder()->take(rand(1,10))->pluck('id');
         }
-        
+        Customer::factory(20)->create();
     }
 
 };

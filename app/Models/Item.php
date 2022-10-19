@@ -18,4 +18,7 @@ class Item extends Model
     public function vendors(){
         return $this->belongsToMany(Vendor::class);
     }
+    public function hasVendor($vendor){
+        return $this->vendors->contains($vendor);
+    }
 }

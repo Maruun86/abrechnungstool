@@ -2,13 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\Item;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Vendor>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\RFID>
  */
-class VendorFactory extends Factory
+class RFIDFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,7 +17,8 @@ class VendorFactory extends Factory
     public function definition()
     {
         return [
-        'name' => fake()->company(),
+            'rfid_nr' => rand(00000000,99999999)
+            //
         ];
     }
 }

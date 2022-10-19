@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('items', function (Blueprint $table) {
+        Schema::create('rfids', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
-            $table->integer("preis");
-            $table->text('desciption')->default('');
-            $table->foreignId('vat_id')->nullable()->constrained();
+            $table->string('rfid_nr')->unique();
         });
     }
 
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('items');
+        Schema::dropIfExists('rfids');
     }
 };

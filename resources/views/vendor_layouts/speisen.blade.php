@@ -1,23 +1,16 @@
 <x-layout>
-    <div class="container">
-        <div class="col-3">
-            @if ($items != NULL)
-                @foreach ($items as $item)
-                    <x-item_card :item="$item"/>
-                @endforeach  
-            @else
-                <p>No items Found</p>
-            @endif
+    <div class="container text-center">
+        <div>
+            <h1>{{$vendor->name}}</h1>
         </div>
-    </div>  
-
-    <div class="container">
         <div class="row">
-          <div class="col">Column</div>
-          <div class="col">Column</div>
-          <div class="w-100"></div>
-          <div class="col">Column</div>
-          <div class="col">Column</div>
+            @if ($vendor->items)
+            @foreach ($vendor->items as $item)
+                <x-item_card :item="$item"/>
+            @endforeach
+            @else
+            No Items found
+            @endif
         </div>
       </div>
 </x-layout>

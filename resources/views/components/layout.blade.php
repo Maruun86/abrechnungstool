@@ -13,8 +13,10 @@
     <title>Protoytyp Abrechnungstool</title>
 </head>
 <body class=''>
+   
     <h1>>Protoytyp Abrechnungstool</h1>
     <main>
+        <x-navbar/>
         {{$slot}}
     </main>
 </body>

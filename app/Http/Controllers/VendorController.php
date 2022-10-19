@@ -13,7 +13,7 @@ class VendorController extends Controller
 {
     public function index() {
         return view("index", [
-        'vendors' => Vendor::all()
+        'vendors' => Vendor::paginate(10)
         ]);
     }
 
@@ -24,23 +24,29 @@ class VendorController extends Controller
 
         return view($view, [
         'vendor' => $vendor,
-        'items' => Item::all()
         ]);
     }
 
     public function list() {
         return view("vendors.list", [
-        'vendors' => Vendor::all()
+        'vendors' => Vendor::paginate(10)
         ]);
     }    
 
     public function create(){
         return view('vendors.create',[
-            'layouts' => Layout::all()
+            'layouts' => Layout::all(),
+            'items' => Item::all()
         ]);
     }
-
-    public function add(Request $request){
+    public function edit(Vendor $vendor){
+        return view('vendors.edit',[
+            'layouts' => Layout::all(),
+            'items' => Item::all(),
+            'vendor' => $vendor
+        ]);
+    }
+    public function store(Request $request){
         $form = $request -> validate([
             'name' => 'required',
             'layout_id' => 'required'
@@ -48,9 +54,46 @@ class VendorController extends Controller
         $layout = Layout::where('name', $form['layout_id'])
             ->first();
         $form['layout_id'] = $layout->id;
-        Vendor::create($form);
+        $vendor = Vendor::create($form);
 
-        return redirect(route('LIST_VENDORS'))->with('message', 'Listing created successfully!');
+        foreach ($request->request as $key => $value ) {
+            if($key !== '_token' && $key !== 'name' && $key !== 'layout_id')
+            {
+                $item = Item::where('name', $key)
+                ->first();
+                $vendor->items()->attach($item);
+            }
+        }
+
+        return redirect(route('LIST_VENDORS'));
     }
+    public function update(Request $request, Vendor $vendor){
+        $form = $request -> validate([ 
+            'name' => 'required',
+            'layout_id' => 'required'
+        ]);
+        $layout = Layout::where('name', $form['layout_id'])
+            ->first();
 
+        $vendor->name = $request->get('name');
+        $vendor->layout_id = $layout->id;
+        $vendor->save();
+
+        $vendor->items()->detach();
+        foreach ($request->request as $key => $value ) {
+            if($key !== '_token' && $key !== 'name' && $key !== 'layout_id'  && $key !== '_method')
+            {
+
+                $item = Item::where('name', $key)
+                ->first();
+                $vendor->items()->attach($item);
+            }
+        }
+        return redirect(route('LIST_VENDORS'));
+    }
+    public function destroy(Vendor $vendor){
+        $vendor->items()->detach();
+        $vendor->delete();
+        return redirect(route('LIST_VENDORS'));
+    }
 }

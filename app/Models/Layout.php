@@ -13,7 +13,7 @@ class Layout extends Model
     protected $fillable = ['name', 'view_path'];
     public $timestamps = false;
 
-    public function vendor(){
+    public function vendors(){
         return $this->hasMany(Vendor::class, 'layout_id');
     }
 }
