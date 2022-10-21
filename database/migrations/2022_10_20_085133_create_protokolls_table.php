@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('protokolls', function (Blueprint $table) {
             $table->id();
-            $table->string('vorname');
-            $table->string('nachname');
-            $table->string('email');
-            $table->string('rfid_nr');
-            $table->boolean('active')->default('1');
+            $table->timestamps();
+            $table->foreignid('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignid('role_id')->constrained()->cascadeOnDelete();;
+            $table->foreignid('event_id')->constrained()->cascadeOnDelete();;
+            $table->text('action');
         });
     }
 
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('customers');
+        Schema::dropIfExists('protokolls');
     }
 };

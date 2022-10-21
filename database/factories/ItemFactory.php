@@ -20,7 +20,7 @@ class ItemFactory extends Factory
         return [
             'name' => fake()->country(),
             'preis' => rand(1,20),
-            'vat_id' => 1
+            'vat_id' => rand(2,10)
             ];
     }
 }

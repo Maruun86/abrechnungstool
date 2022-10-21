@@ -19,6 +19,10 @@
                 <td><a href="{{route('EDIT_ITEM', $item)}}"><button type="button" class="btn btn-primary">
                     Edit
                 </button></a>
+                <a href="{{route('DESTROY_ITEM', $item)}}"><button type="button" class="btn btn-primary">
+                    Löschen
+                </button></a>
+                </td>
             </tr>
         @endforeach
         </table>

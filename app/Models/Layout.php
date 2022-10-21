@@ -13,6 +13,11 @@ class Layout extends Model
     protected $fillable = ['name', 'view_path'];
     public $timestamps = false;
 
+      /**
+     * Get all vendors associated with the Layout
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function vendors(){
         return $this->hasMany(Vendor::class, 'layout_id');
     }

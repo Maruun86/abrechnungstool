@@ -17,7 +17,7 @@ class VatFactory extends Factory
     public function definition()
     {
         return [
-            'prozent_in_decimal' => (round(rand(0,20)) / 100)
+            'prozent_in_decimal' => (round(rand(1,20)) / 100)
             //
         ];
     }

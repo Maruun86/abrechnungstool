@@ -12,7 +12,7 @@
             <label for="email">E-Mail</label>
             <input type="email" id="email" name="email"><br>
             <label for="rfid_nr">RFID-Nr.</label>
-            <input type="text" id="rfid_nr" name="rfid_nr"><br>
+            <input type="number" id="rfid_nr" name="rfid_nr"><br>
             <input type="submit" value='Hinzufügen'> 
         </form>
     </div>

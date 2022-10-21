@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\RFID;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,13 +16,12 @@ class CustomerFactory extends Factory
      */
     public function definition()
     {
-        $nr = RFID::factory()->create();
-        $rfid = RFID::where('rfid_nr',  $nr->rfid_nr)->first();
+
         return [
             'vorname' =>fake()->firstName(),
             'nachname' =>fake()->lastname(),
             'email' =>fake()->email(),
-            'rfid_id' => $rfid->id,
+            'rfid_nr' => rand(000000,999999),
             'active' => true
         ];
     }

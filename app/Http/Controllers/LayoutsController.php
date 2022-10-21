@@ -10,11 +10,21 @@ use Illuminate\Support\Facades\Storage;
 
 class LayoutsController extends Controller
 {
+    /**
+     * Shows a list of all ressources.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function list() {
         return view("vendor_layouts.crud.list", [
         'layouts' => Layout::paginate(10)
         ]);
     }
+    /**
+     * Shows the Create Form.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create() {
         $files = Storage::disk('layouts')->files();
         $explodedFiles = [];
@@ -27,7 +37,12 @@ class LayoutsController extends Controller
             'filelist' => $explodedFiles
         ]);
     }
-    
+    /**
+     * Stores the ressource.
+     *
+     * @param  Illuminate\Http\Request;  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request){
         $form = $request -> validate([
             'name' => 'required',
@@ -37,7 +52,12 @@ class LayoutsController extends Controller
 
         return redirect(route('LIST_LAYOUTS'));
     }
-
+    /**
+     * Shows the edit Form.
+     *
+     * @param  App\Models\Layout  $layout
+     * @return \Illuminate\Http\Response
+     */
     public function edit(Layout $layout){
         $files = Storage::disk('layouts')->files();
         $explodedFiles = [];
@@ -51,7 +71,13 @@ class LayoutsController extends Controller
             'layout' => $layout
         ]);
     }
-
+    /**
+     * Updates the ressource.
+     *
+     * @param  Illuminate\Http\Request;  $request   
+     * @param  App\Models\Layout  $layout
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, Layout $layout)
     {
         $form = $request -> validate([
@@ -62,7 +88,12 @@ class LayoutsController extends Controller
 
         return redirect(route('LIST_LAYOUTS'));
     }
-
+     /**
+     * Deletes the ressource.
+     *
+     * @param  App\Models\Layout;  $item
+     * @return \Illuminate\Http\Response
+     */
     public function destroy(Layout $layout)
     {
         $vendors = Vendor::where('layout_id', $layout->id)->get();

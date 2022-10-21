@@ -13,9 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('rfids', function (Blueprint $table) {
+        Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->string('rfid_nr')->unique();
+            $table->string('name');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->boolean('cash_pay')->default(0);
+            $table->boolean('event_running')->default(0);
         });
     }
 
@@ -26,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rfids');
+        Schema::dropIfExists('events');
     }
 };

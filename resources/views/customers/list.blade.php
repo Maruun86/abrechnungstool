@@ -16,7 +16,7 @@
         <tr>
             <td>{{$customer->vorname." ".$customer->nachname}}</td>
             <td>{{$customer->email}}</td>
-            <td>{{$customer->rfid->rfid_nr}}</td>
+            <td>{{$customer->rfid_nr}}</td>
             <td>
                 <a href="{{route('EDIT_CUSTOMER', $customer)}}"><button type="button" class="btn btn-primary">
                 Edit
@@ -33,7 +33,7 @@
             <tr class='bg-danger'>
                 <td>{{$customer->vorname." ".$customer->nachname}}</td>
                 <td>{{$customer->email}}</td>
-                <td>{{$customer->rfid->rfid_nr}}</td>
+                <td>{{$customer->rfid_nr}}</td>
                 <td><a href="{{route('EDIT_CUSTOMER', $customer)}}"><button type="button" class="btn btn-primary">
                     Edit
                 </button></a>

@@ -8,9 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Vat extends Model
 {
     public $timestamps = false;
+    protected $fillable = ['prozent_in_decimal'];
     use HasFactory;
 
-    public function item(){
+      /**
+     * Get all items associated with the VAT
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function items(){
         return $this->hasMany(Item::class, 'vat_id');
     }
     

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
-use App\Models\RFID;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -20,9 +19,16 @@ class CustomerController extends Controller
             'customers' => Customer::paginate(10)
             ]);
     }
+
+    /**
+     * Shoes the create Form.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create(){
         return view('customers.create');
     }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -31,23 +37,62 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //id is here the RFID
         $form = $request -> validate([
             'vorname' => 'required',
             'nachname' => 'required',
             'email' => 'required',
-            'rfid_nr' => ['required',  Rule::unique('rfids','rfid_nr')]
+            'rfid_nr' => ['required',  Rule::unique('customers','rfid_nr')]
         ]);
 
-        $rfid = RFID::create([
-            'rfid_nr' => $request->get('rfid_nr')
-        ]);
-        $form['rfid_id'] = $rfid->id;
         Customer::create($form);
 
         return redirect(route('LIST_CUSTOMERS'));
-
     }
+
+    /**
+     * Shows the edit Form.
+     *
+     * @param  App\Models\Customer  $customer
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Customer $customer){
+        return view('customers.edit',[
+            'customer' => $customer
+
+        ]);
+    }
+   /**
+     * Updates the ressource.
+     *
+     * @param  Illuminate\Http\Request  $request
+     * @param  App\Models\Item  $customer
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Customer $customer){
+       $request -> validate([
+        'vorname' => 'required',
+        'nachname' => 'required',
+        'email' => 'required',
+        'rfid_nr' => ['required',  Rule::unique('customers')->ignore($customer->rfid_nr, 'rfid_nr')]
+        ]);
+
+
+        $customer->vorname =  $request->get('vorname');
+        $customer->nachname =  $request->get('nachname');
+        $customer->email =  $request->get('email');
+        $customer->rfid_nr = $request->get('rfid_nr');
+        $customer->save();  
+
+        return redirect(route('LIST_CUSTOMERS'));
+    }
+        
+
+    /**
+     * Toggles the active state for the customer.
+     *
+     * @param  App\Models\Customer  $customer
+     * @return \Illuminate\Http\Response
+     */
     public function toggle(Customer $customer)
     {
         if ($customer->active)
@@ -62,8 +107,15 @@ class CustomerController extends Controller
         }
         return redirect(route('LIST_CUSTOMERS'));
     }
+
+    /**
+     * Deletes the model.
+     *
+     * @param  App\Models\Customer  $customer
+     * @return \Illuminate\Http\Response
+     */
     public function destroy(Customer $customer){
-        $customer->rfid()->delete();
+        $customer->delete();
         return redirect(route('LIST_CUSTOMERS'));
     }
 

@@ -3,7 +3,7 @@
         <div class="container">
             <h5 class="">{{$vendor->name}}</h5>
             <br>
-                {{$vendor->layout->name}}          
+            {{$vendor->layout->name}}          
         </div>
     </button></a>
 </div>

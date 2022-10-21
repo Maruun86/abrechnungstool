@@ -1,11 +1,13 @@
 <?php
 
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\EventController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\LayoutsController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\VATController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,19 +21,14 @@ use App\Http\Controllers\LayoutsController;
 */
 Route::controller(VendorController::class)->group(function () {
     Route::get('/', 'index');
-
     //List Vendors
     Route::get('/vendors','list')->name('LIST_VENDORS');
-
     //Create Vendor
     Route::get('/vendors/new','create')->name('CREATE_VENDOR');
-
     //Add Vendor
     Route::post('/vendors', 'store')->name('STORE_VENDOR');
-
     //Show Vendor
     Route::get('/vendors/{vendor}','show')->name('SHOW_VENDOR');
-    
     //Edit Vendor
     Route::get('/vendors/{vendor}/edit','edit')->name('EDIT_VENDOR');
     //update Vendor
@@ -67,8 +64,9 @@ Route::controller(ItemController::class)->group(function () {
     Route::get('/items/{item}/edit','edit')->name('EDIT_ITEM');
     //Update Items
     Route::put('/items/{item}','update')->name('UPDATE_ITEM');
+    //Delete Items
+    Route::get('/items/{item}/delete','destroy')->name('DESTROY_ITEM');
 });
-
 
 Route::controller(CustomerController::class)->group(function () {
     //List Customers
@@ -79,12 +77,65 @@ Route::controller(CustomerController::class)->group(function () {
     Route::post('/customers','store')->name('STORE_CUSTOMER');
     //Edit Customers
     Route::get('/customers/{customer}/edit','edit')->name('EDIT_CUSTOMER');
-    //Update Items
+    //Update Customers
     Route::put('/customers/{customer}','update')->name('UPDATE_CUSTOMER');
-    //Update Items
+    //Toggle Customers
     Route::get('/customers/{customer}/toggle','toggle')->name('TOGGLE_CUSTOMER');
-    //Update Items
-    Route::get('/customers/{customer}/destroy','destroy')->name('DESTROY_CUSTOMER');
+    //Delete Customers
+    Route::get('/customers/{customer}/delete','destroy')->name('DESTROY_CUSTOMER');
 
+});
+Route::controller(UserController::class)->group(function () {
+    //List Customers
+    Route::get('/users','list')->name('LIST_USERS');
+    //Create Customers
+    Route::get('/users/new','create')->name('CREATE_USER');
+    //Add Customers
+    Route::post('/users','store')->name('STORE_USER');
+    //Edit Customers
+    Route::get('/users/{user}/edit','edit')->name('EDIT_USER');
+    //Update Customers
+    Route::put('/users/{user}','update')->name('UPDATE_USER');
+    //Toggle Customers
+    Route::get('/users/{user}/toggle','toggle')->name('TOGGLE_USER');
+    //Delete Customers
+    Route::get('/users/{user}/delete','destroy')->name('DESTROY_USER');
+
+});
+Route::controller(EventController::class)->group(function () {
+    //List Events
+    Route::get('/events','list')->name('LIST_EVENTS');
+    //Create Events
+    Route::get('/events/new','create')->name('CREATE_EVENT');
+    //Add Events
+    Route::post('/events','store')->name('STORE_EVENT');
+    //Show Events
+    Route::get('/events/{event}','show')->name('SHOW_EVENT');
+    //Edit Events
+    Route::get('/events/{event}/edit','edit')->name('EDIT_EVENT');
+    //Update Events
+    Route::put('/events/{event}','update')->name('UPDATE_EVENT');
+    //Delete Events
+    Route::get('/events/{event}/delete','destroy')->name('DESTROY_EVENT');
+    //Toggle Events
+    Route::get('/events/{event}/toggle','toggle')->name('TOGGLE_EVENT');
+    //Users Event
+    Route::put('/events/{event}/users','users')->name('USERS_EVENT');
+
+});
+
+Route::controller(VATController::class)->group(function () {
+    //List Items
+    Route::get('/vats','list')->name('LIST_VATS');
+    //Create Items
+    Route::get('/vats/new','create')->name('CREATE_VAT');
+    //Add Item
+    Route::post('/vats','store')->name('STORE_VAT');
+    //Edit Items
+    Route::get('/vats/{vat}/edit','edit')->name('EDIT_VAT');
+    //Update Items
+    Route::put('/vats/{vat}','update')->name('UPDATE_VAT');
+    //Delete Items
+    Route::get('/vats/{vat}/delete','destroy')->name('DESTROY_VAT');
 });
 

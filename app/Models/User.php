@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'rfid_nr'
     ];
 
     /**
@@ -41,4 +42,58 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get all of the events for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function events()
+    {
+        return $this->belongsToMany(Event::class);
+    }
+
+        /**
+     * Check for the specific user associated with the Event
+     *
+     * @param  App\Models $vendor
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function hasEvent($event){
+        return $this->events->contains($event);
+    }
+
+    /**
+     * Get the Role associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    /**
+     * Get the vendor associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class);
+    }
+
+     /**
+     * Is the current event active for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function hasActiveEvent($event)
+    {
+       if( $this->events->contains($event))
+       {
+        return $event->event_running;
+      }
+    }
+
 }

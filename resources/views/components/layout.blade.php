@@ -10,12 +10,15 @@
     
         <!-- Scripts -->
         @vite(['resources/js/app.js'])
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
     <title>Protoytyp Abrechnungstool</title>
 </head>
 <body class=''>
    
     <h1>>Protoytyp Abrechnungstool</h1>
     <main>
+        <!--Navbar is here-->
         <x-navbar/>
         {{$slot}}
     </main>

@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\RFID>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
-class RFIDFactory extends Factory
+class RoleFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -16,9 +16,9 @@ class RFIDFactory extends Factory
      */
     public function definition()
     {
+        $roleNames = ['Admin', 'Verkäufer', 'Bedienung', 'Super-Verkäufer'];
         return [
-            'rfid_nr' => rand(00000000,99999999)
-            //
+            'name' => $roleNames[rand(0,3)]
         ];
     }
 }
