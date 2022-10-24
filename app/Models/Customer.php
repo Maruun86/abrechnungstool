@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Customer extends Model
 {
     public $timestamps = false;
-    protected $fillable = ['vorname', 'nachname', 'email', 'rfid_nr', 'active'];
+    protected $fillable = ['vorname', 'nachname', 'email', 'password', 'active'];
     use HasFactory;
 
 }

@@ -1,13 +1,14 @@
 <?php
 
-use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\EventController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\VATController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\LayoutsController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\VATController;
+use App\Http\Controllers\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,8 +20,13 @@ use App\Http\Controllers\VATController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::controller(HomeController::class)->group(function () {
+    Route::get('/home', 'home')->name('HOME');
+});
+
+
 Route::controller(VendorController::class)->group(function () {
-    Route::get('/', 'index');
+   
     //List Vendors
     Route::get('/vendors','list')->name('LIST_VENDORS');
     //Create Vendor
@@ -100,6 +106,17 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/users/{user}/toggle','toggle')->name('TOGGLE_USER');
     //Delete Customers
     Route::get('/users/{user}/delete','destroy')->name('DESTROY_USER');
+
+    // Show Login Form
+    Route::get('/login', 'login')->name('login')->middleware('guest');
+    //Login user 
+    Route::post('/users/login', 'loginUser')->name('loginUser');
+    //PINLogin
+    Route::get('/users/login/pin', 'PINLogin')->name('PINLogin');
+    // Validate User
+    Route::post('/users/authenticate', 'authenticate')->name('authenticate');
+    // Log User Out
+    Route::post('/logout', 'logout')->middleware('auth');
 
 });
 Route::controller(EventController::class)->group(function () {

@@ -20,7 +20,7 @@
             <td>{{$user->email}}</td>
             <td>{{$user->role->name}}</td>
             <td>{{$user->vendor ?  $user->vendor->name: 'Kein Vendor'}}</td>
-            <td>{{$user->rfid_nr}}</td>
+            <td>{{$user->password}}</td>
             <td>
                 <a href="{{route('EDIT_USER', $user)}}"><button type="button" class="btn btn-primary">
                 Edit
@@ -39,7 +39,7 @@
                 <td>{{$user->email}}</td>
                 <td>{{$user->role->name}}</td>
                 <td>{{$user->vendor->name}}</td>
-                <td>{{$user->rfid_nr}}</td>
+                <td>{{$user->password}}</td>
                 <td>
                     <a href="{{route('EDIT_USER', $user)}}"><button type="button" class="btn btn-primary">
                     Edit

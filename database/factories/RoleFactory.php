@@ -18,7 +18,9 @@ class RoleFactory extends Factory
     {
         $roleNames = ['Admin', 'Verkäufer', 'Bedienung', 'Super-Verkäufer'];
         return [
-            'name' => $roleNames[rand(0,3)]
+            'name' => $roleNames[rand(0,3)],
+            'pin_needed' => rand(0,1),
+            'password_needed' => rand(0,1)
         ];
     }
 }

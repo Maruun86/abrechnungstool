@@ -11,8 +11,8 @@
             <input type="text" id="nachname" name="nachname"><br>
             <label for="email">E-Mail</label>
             <input type="email" id="email" name="email"><br>
-            <label for="rfid_nr">RFID-Nr.</label>
-            <input type="number" id="rfid_nr" name="rfid_nr"><br>
+            <label for="password">RFID-Nr.</label>
+            <input type="number" id="password" name="password"><br>
             <input type="submit" value='Hinzufügen'> 
         </form>
     </div>
