@@ -1,6 +1,6 @@
 <x-layout>
     <div class="container ">
-        <a href="/"><button type="button" class="btn btn-primary">
+        <a href="{{route('HOME')}}"><button type="button" class="btn btn-primary">
             Zurück
         </button></a>
         <h1>Layoutverwaltung</h1>
@@ -15,12 +15,16 @@
                 <tr>
                     <td>{{$layout->name}}</td>
                     <td>/vendor_layout/{{$layout->view_path}}.blade.php</td>
+                    @can('edit-layout')
                     <td><a href="{{route('EDIT_LAYOUT', $layout)}}"><button type="button" class="btn btn-primary">
                         Edit
                     </button></a>
+                    @endcan
+                    @can('delete-layout')
                     <a href="{{route('DESTROY_LAYOUT', $layout)}}"><button type="button" class="btn btn-primary">
                         Löschen
                     </button></a>
+                    @endcan
                     </td>
                 </tr>
                 @else
@@ -32,9 +36,11 @@
             @endif
         @endforeach
         </table>
-        <a href="{{route('CREATE_LAYOUT')}}"><button type="button" class="btn btn-primary">
-            Hinzufügen
-        </button></a>
+        @can('create-layout')
+            <a href="{{route('CREATE_LAYOUT')}}"><button type="button" class="btn btn-primary">
+                Hinzufügen
+            </button></a>
+        @endcan
   </div>
   <div class="d-flex justify-content-center">
     {!! $layouts->withQueryString()->links('pagination::bootstrap-5') !!}

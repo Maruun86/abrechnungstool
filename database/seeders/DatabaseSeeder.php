@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Vat;
 use App\Models\Item;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Event;
 use App\Models\Layout;
@@ -13,7 +14,7 @@ use App\Models\Vendor;
 use App\Models\History;
 use App\Models\Customer;
 use App\Models\Protokoll;
-use App\Models\Role;
+use App\Models\Permission;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -25,6 +26,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call([
+            PermissionsSeeder::class,
+            SuperAdminSeeder::class
+           
+        ]);
+
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([
@@ -34,14 +41,53 @@ class DatabaseSeeder extends Seeder
         #
         $layoutNames = ['Getränke','Speisen','Garderobe','Merchandise','Photos','Infostand'];
         $layoutViews = ['getraenke','speisen','garderobe','merchandise','photos','infostand'];
+        Role::factory()->create([
+            'name' => 'PIN_Tester',
+            'pin_needed' => true,
+            'password_needed' => false
+        ]);
+        User::factory()->create([
+            'name' => 'Tester_Pin',
+            'email' => 'pin@test.de',
+            'password' => bcrypt('1542'), //PIN
+            'rfid_nr' => '99999',
+            'role_id' => 2
+        ]);
+        Role::factory()->create([
+            'name' => 'Password_Tester',
+            'pin_needed' => false,
+            'password_needed' => true
+        ]);
+        User::factory()->create([
+            'name' => 'Tester_Password',
+            'email' => 'password@test.de',
+            'password' => bcrypt('password'), //Password
+            'rfid_nr' => '99998',
+            'role_id' => 3
+        ]);
+
         User::factory(20)->create();
-        Role::factory(5)->create();
         Vat::factory()->create([
             'prozent_in_decimal' => 0
         ]); 
         Layout::factory()->create([
             'name' => 'Kein Layout',
             'view_path' => 'no_layout'
+        ]);
+        Role::factory()->create([
+            'name' => 'Tester_Bedienung',
+            'pin_needed' => true,
+            'password_needed' => false
+        ]);
+        Role::factory()->create([
+            'name' => 'Tester_Super-Verkäufer',
+            'pin_needed' => false,
+            'password_needed' => true
+        ]);
+        Role::factory()->create([
+            'name' => 'Tester_Kassierer',
+            'pin_needed' => true,
+            'password_needed' => false
         ]);
 
         for ($i=0; $i < 5; $i++) { 
@@ -84,7 +130,10 @@ class DatabaseSeeder extends Seeder
                 $user->vendor()->associate($vendors[rand(1,4)])->save();
             }  
         }
-        }
         
+      
 
-};
+    }
+
+
+}

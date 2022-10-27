@@ -1,8 +1,10 @@
 <x-layout>
-    <a href="{{route('LIST_VATS')}}"><button type="button" class="btn btn-primary">
-        Zurück
-    </button></a>
-    <div class="container bg-dark text-white">
+   
+    <div class="container">
+        <a href="{{route('LIST_VATS')}}"><button type="button" class="btn btn-primary">
+            Zurück
+        </button></a><br><br>
+        <h4>VAT editieren</h4>
         <form action="{{route('UPDATE_VAT', $vat)}}" method="POST">
             @csrf
             @method('put')

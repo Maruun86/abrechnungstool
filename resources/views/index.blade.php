@@ -1,4 +1,5 @@
 <x-layout>
+        
     <div class="container">
         @if($event)
             <h1>Vendors für {{$event->name}}</h1>

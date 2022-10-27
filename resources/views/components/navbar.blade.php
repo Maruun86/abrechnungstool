@@ -8,7 +8,7 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/">Dashboard</a>
+            <a class="nav-link active" aria-current="page" href="{{route('HOME')}}">Dashboard</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{route('LIST_EVENTS')}}">Events</a>
@@ -19,11 +19,36 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <li><a class="dropdown-item" href="{{route('LIST_USERS')}}">Benutzer</a></li>
-              <li><a class="dropdown-item" href="{{route('LIST_ITEMS')}}">Items</a></li>
-              <li><a class="dropdown-item" href="{{route('LIST_CUSTOMERS')}}">Kunden</a></li>
-              <li><a class="dropdown-item" href="{{route('LIST_LAYOUTS')}}">Layouts</a></li>
-              <li><a class="dropdown-item" href="{{route('LIST_VATS')}}">VATs</a></li>
-              <li><a class="dropdown-item" href="{{route('LIST_VENDORS')}}">Vendors</a></li>
+              @can('list-items')
+                <li><a class="dropdown-item" href="{{route('LIST_ITEMS')}}">Items</a></li>
+              @endcan
+              @cannot('list-items')
+                <li><a class="dropdown-item text-muted" href="" >Items</a></li> 
+              @endcannot
+              @can('list-customers')
+                <li><a class="dropdown-item" href="{{route('LIST_CUSTOMERS')}}">Kunden</a></li>
+              @endcan
+              @cannot('list-customers')
+                <li><a class="dropdown-item text-muted" href="" >Kunden</a></li> 
+              @endcannot
+              @can('list-layouts')
+                <li><a class="dropdown-item" href="{{route('LIST_LAYOUTS')}}">Layouts</a></li>
+              @endcan
+              @cannot('list-layouts')
+                <li><a class="dropdown-item text-muted" href="">Layouts</a></li>
+              @endcannot
+              @can('list-vats')
+                <li><a class="dropdown-item" href="{{route('LIST_VATS')}}">VATs</a></li>
+              @endcan
+              @cannot('list-vats')
+                <li><a class="dropdown-item text-muted" href="" >VATs</a></li> 
+              @endcannot
+              @can('list-vendors')
+                <li><a class="dropdown-item" href="{{route('LIST_VENDORS')}}">Vendors</a></li>
+              @endcan
+              @cannot('list-vendors')
+                <li><a class="dropdown-item text-muted" href="" >Vendors</a></li> 
+              @endcannot
             </ul>
           </li>
           <li class="nav-item">

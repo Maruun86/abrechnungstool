@@ -18,7 +18,8 @@ class UserController extends Controller
     public function list()
     {
         return view("users.list", [
-            'users' => User::paginate(10)
+            'users' => User::paginate(10),
+            'roles' => Role::paginate(10)
             ]);
     }
 
@@ -50,7 +51,6 @@ class UserController extends Controller
                 $form = $request -> validate([
                     'name' => 'required',
                     'email' => ['required', Rule::unique('users','email')],
-                    'role_id' => 'required',
                     'pin'   => ['required', 'integer','digits:5'],
                     'vendor_id' => 'required',
                     'rfid_nr' => ['required',  Rule::unique('users','rfid_nr')]
@@ -59,7 +59,6 @@ class UserController extends Controller
                 $form = $request -> validate([
                     'name' => 'required',
                     'email' => ['required', Rule::unique('users','email')],
-                    'role_id' => 'required',
                     'password'   => 'required',
                     'vendor_id' => 'required',
                     'rfid_nr' => ['required',  Rule::unique('users','rfid_nr')]
@@ -69,7 +68,6 @@ class UserController extends Controller
                 $form = $request -> validate([
                     'name' => 'required',
                     'email' => ['required', Rule::unique('users','email')],
-                    'role_id' => 'required',
                     'vendor_id' => 'required',
                     'rfid_nr' => ['required',  Rule::unique('users','rfid_nr')]
                 ]);
@@ -80,20 +78,23 @@ class UserController extends Controller
         $form = $request -> validate([
             'name' => 'required',
             'email' => ['required', Rule::unique('users','email')],
-            'role_id' => 'required',
             'vendor_id' => 'required',
+            'role_id' => 'required',
             'rfid_nr' => ['required',  Rule::unique('users','rfid_nr')]
         ]);
         }
        
         if(Role::find($request->get('role_id'))->pin_needed)
         {
-            $request['pin'] = bcrypt( $request['pin']);
-        }
-        if(Role::find($request->get('role_id'))->pin_needed)
+            $form['password'] = bcrypt( $request['pin']);
+        }elseif(Role::find($request->get('role_id'))->password_neeeded)
         {
-            $request['password'] = bcrypt( $request['password']);
+            $form['password'] = bcrypt( $request['password']);
+        }else{
+            $form['password'] = bcrypt('no_password');
         }
+
+
 
         $newUser = User::create($form);
         $role = Role::find($request->get('role_id'));
@@ -111,7 +112,7 @@ class UserController extends Controller
      * @param  App\Models\user  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(user $user){
+    public function edit(User $user){
         return view('users.edit',[
             'user' => $user,
             'vendors' => Vendor::all(),
@@ -249,7 +250,7 @@ class UserController extends Controller
            
         }else
         {
-            return redirect(route('HOME'));
+            return redirect(route('/'));
         }
         
     }

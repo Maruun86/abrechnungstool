@@ -3,12 +3,16 @@
         <h1>{{$event->name}}</h1>
         <h4>Zeitraum: {{$event->start_date}} -  {{$event->end_date}}</h4>
         <h4>Zahlungsart: {{$event->cash_pay ? 'Barzahlung' : 'Bargeldlos'}}</h4>
-        <a href="{{route('EDIT_EVENT', $event)}}"><button type="button" class="btn btn-primary">
-            Edit
-        </button></a>
+        @can('edit-event')
+            <a href="{{route('EDIT_EVENT', $event)}}"><button type="button" class="btn btn-primary">
+                Edit
+            </button></a>
+        @endcan
+        @can('delete-event')
         <a href="{{route('DESTROY_EVENT', $event)}}"><button type="button" class="btn btn-primary">
             Löschen
         </button></a>
+        @endcan
         <br><br>
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
@@ -61,15 +65,17 @@
                 </table>
             </div>
             <div class="tab-pane fade" id="users" role="tabpanel" aria-labelledby="users-tab">
+                @can('users-event')
                 <form action="{{route('USERS_EVENT', $event)}}" method="post">
                     @csrf
                     @method('put')
                     @if($users)
-                    <table>
+                    <table class="table">
                         <tr>
                             <th></th>
                             <th>Name</th>
                             <th>E-Mail</th>
+                            <th>Vendor</th>
                             <th>Rolle</th>
                         </tr>
                         @foreach ($users as $user)
@@ -79,6 +85,7 @@
                                 <td><input type="checkbox" id="{{$user->id}}" name="{{$user->name}}" value="{{$user->id}}" checked="true"></td>
                                 <td>{{$user->name}}</td>
                                 <td>{{$user->email}}</td>
+                                <td>{{$user->vendor ? $user->vendor->name : 'Kein Vendor'}}</td>
                                 <td>{{$user->role->name}}</td>
                             </tr>  
                                 @else
@@ -86,18 +93,43 @@
                                 <td><input type="checkbox" id="{{$user->id}}" name="{{$user->name}}" value="{{$user->id}}"></td>
                                 <td>{{$user->name}}</td>
                                 <td>{{$user->email}}</td>
+                                <td>{{$user->vendor ? $user->vendor->name : 'Kein Vendor'}}</td>
                                 <td>{{$user->role->name}}</td>
                                 @endif
                             </tr>
                         @endforeach
-                    </tr>
                     @else
                         Es wurden keine Benutzer gefunden, erstellen sie einen Benutzer
                     @endif
                     </table>
-                    <br>
+                    <br>    
                     <input type="submit" value='Update'> 
             </form>
+            @endcan
+            @cannot('users-event')
+            @if($users)
+                    <table class='table'>
+                        <tr>
+                            <th>Name</th>
+                            <th>E-Mail</th>
+                            <th>Vendor</th>
+                            <th>Rolle</th>
+                        </tr>
+                        @foreach ($users as $user)
+                         <!-- Only users with this event are shown -->
+                         @if ($user->hasEvent($event))
+                            <tr>
+                                <td>{{$user->name}}</td>
+                                <td>{{$user->email}}</td>
+                                <td>{{$user->vendor ? $user->vendor->name : 'Kein Vendor'}}</td>
+                                <td>{{$user->role->name}}</td>
+                            </tr> 
+                            @endif 
+                        @endforeach
+                    @else
+                        Es wurden keine Benutzer gefunden, erstellen sie einen Benutzer
+                    @endif
+            @endcannot
             </div>
           </div>          
     </div>

@@ -1,8 +1,10 @@
 <x-layout>
-    <a href="{{route('LIST_LAYOUTS')}}"><button type="button" class="btn btn-primary">
-        Zurück
-    </button></a>
-    <div class="container bg-dark text-white">
+    
+    <div class="container">
+        <a href="{{route('LIST_LAYOUTS')}}"><button type="button" class="btn btn-primary">
+            Zurück
+        </button></a><br><br>
+        <h4>{{$layout->name}} editieren</h4>
         <form action="{{route('UPDATE_LAYOUT', $layout)}}" method="POST">
             @csrf
             @method('put')
@@ -15,7 +17,7 @@
                 @endforeach
             </select>
             <br>
-            <input type="submit" value='Hinzufügen'> 
+            <input type="submit" value='Update'> 
         </form>
     </div>
 </x-layout>

@@ -13,10 +13,12 @@
             }
         }
     </script>
-    <a href="{{route('LIST_USERS')}}"><button type="button" class="btn btn-primary">
-        Zurück
-    </button></a>
-    <div class="container bg-dark text-white">
+    
+    <div class="container">
+        <a href="{{route('LIST_USERS')}}"><button type="button" class="btn btn-primary">
+            Zurück
+        </button></a>
+        <h1>Benutzer {{$user->name}} editieren</h1>
         <form action="{{route('STORE_USER')}}" method="POST">
             @csrf
             <label for="name">Name</label>
@@ -64,7 +66,7 @@
             <select name="vendor_id" id="vendor_id">
                 <option value= 'NULL'>Kein Vendor</option>
                     @foreach ($vendors as $vendor)
-                    @if ($user->vendor->id === $vendor->id)
+                    @if ($user->vendor && $user->vendor === $vendor->id)
                         <option value={{$vendor->id}} selected>{{$vendor->name}}</option>
                     @else
                         <option value={{$vendor->id}}>{{$vendor->name}}</option>
@@ -89,7 +91,7 @@
             @if ($user->role->password_needed)
                 <div id='password_needed' style='display: block '>
                     <label for="password">Passwort</label>
-                    <input type="password" id="password" name="password" value="{{$user->password}}"><br>
+                    <input type="password" id="password" name="password" value=""><br>
                 </div>
             @else
                 <div id='password_needed' style='display: none'>
@@ -101,9 +103,9 @@
                     <span class="text-danger">Ausgewählte Rolle braucht ein Password</span><br>
                 @endif
             <br>
-            <label for="password">RFID-Nr.</label>
-            <input type="text" id="password" name="password"value="{{$user->password}}"><br>
-            @if ($errors->has('password'))
+            <label for="rfid_nr">RFID-Nr.</label>
+            <input type="text" id="rfid_nr" name="rfid_nr"value="{{$user->rfid_nr}}"><br>
+            @if ($errors->has('rfid_nr'))
                 <span class="text-danger">RIFD-Nummer benötigt!</span><br>
             @endif
             <input type="submit" value='Hinzufügen'> 
