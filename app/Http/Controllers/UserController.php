@@ -44,66 +44,83 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->get('role_id') != 0)
+        $role = Role::find($request->get('role_id'));
+        if($request->get('role_id') != 'NULL')
         {
-            if(Role::find($request->get('role_id'))->pin_needed)
+            if($role->pin_needed | $role->password_needed)
             {
                 $form = $request -> validate([
                     'name' => 'required',
                     'email' => ['required', Rule::unique('users','email')],
-                    'pin'   => ['required', 'integer','digits:5'],
+                    'role_id'   => 'required',
                     'vendor_id' => 'required',
                     'rfid_nr' => ['required',  Rule::unique('users','rfid_nr')]
                 ]);
-            }elseif (Role::find($request->get('role_id'))->password_needed) {
+
+                $form['password'] = bcrypt('temp');
+                $newUser = User::create($form);
+                $role = Role::find($request->get('role_id'));
+                $vendor = Vendor::find($request->get('vendor_id'));
+                $newUser->role()->associate($role)->save();
+                $newUser->vendor()->associate($vendor)->save();
+
+                return redirect()->route('PASSWORD_USER', [$newUser]);
+            }
+            else
+            {
                 $form = $request -> validate([
                     'name' => 'required',
                     'email' => ['required', Rule::unique('users','email')],
-                    'password'   => 'required',
                     'vendor_id' => 'required',
+                    'role_id' => ['required','numeric'],
                     'rfid_nr' => ['required',  Rule::unique('users','rfid_nr')]
                 ]);
-            }
-            else {
-                $form = $request -> validate([
-                    'name' => 'required',
-                    'email' => ['required', Rule::unique('users','email')],
-                    'vendor_id' => 'required',
-                    'rfid_nr' => ['required',  Rule::unique('users','rfid_nr')]
-                ]);
-            }
-        }
-        else
-        {
-        $form = $request -> validate([
-            'name' => 'required',
-            'email' => ['required', Rule::unique('users','email')],
-            'vendor_id' => 'required',
-            'role_id' => 'required',
-            'rfid_nr' => ['required',  Rule::unique('users','rfid_nr')]
-        ]);
+    
+                $form['password'] = bcrypt('no_password');
+                $newUser = User::create($form);
+                $role = Role::find($request->get('role_id'));
+                $vendor = Vendor::find($request->get('vendor_id'));
+                $newUser->role()->associate($role)->save();
+                $newUser->vendor()->associate($vendor)->save();
+
+                return redirect(route('LIST_USERS'));
+    
+            }      
         }
        
-        if(Role::find($request->get('role_id'))->pin_needed)
-        {
-            $form['password'] = bcrypt( $request['pin']);
-        }elseif(Role::find($request->get('role_id'))->password_neeeded)
-        {
+
+     
+    }
+         /**
+     * Show the Password/Pin View.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function password(User $user)
+    {
+        return view('users.password',[
+            'user' => $user
+        ]);
+    }
+
+     /**
+     * Sets the Password/Pin.
+     *
+     * @param  App\Models\user  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function setpassword(Request $request, User $user)
+    {
+        $form = $request->validate([
+            'password' => 'required',
+            'repeat'   => 'required|same:password',
+        ]);        
+
             $form['password'] = bcrypt( $request['password']);
-        }else{
-            $form['password'] = bcrypt('no_password');
-        }
+            $user->update($form);
 
-
-
-        $newUser = User::create($form);
-        $role = Role::find($request->get('role_id'));
-        $vendor = Role::find($request->get('vendor_id'));
-
-        $newUser->role()->associate($role)->save();
-        $newUser->vendor()->associate($vendor)->save();
-
-        return redirect(route('LIST_USERS'));
+            return redirect(route('LIST_USERS'));
+       
     }
 
     /**
@@ -128,37 +145,50 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, User $user){
-
+        
         if($request->get('role_id') != 0)
         {
-            if(Role::find($request->get('role_id'))->pin_needed)
+            $role = Role::find($request->get('role_id'));
+            if($request->get('role_id') != 'NULL')
             {
-                $form = $request -> validate([
-                    'name' => 'required',
-                    'email' => ['required',Rule::unique('users','email')->ignore($user->email, 'email')],
-                    'role_id' => 'required',
-                    'pin'   => ['required', 'integer','digits:5'],
-                    'vendor_id' => 'required',
-                    'rfid_nr' => ['required',  Rule::unique('users','rfid_nr')->ignore($user->rfid_nr, 'rfid_nt')]
-                ]);
-            }elseif (Role::find($request->get('role_id'))->password_needed) {
-                $form = $request -> validate([
-                    'name' => 'required',
-                    'email' => ['required', Rule::unique('users','email')->ignore($user->email, 'email')],
-                    'role_id' => 'required',
-                    'password'   => 'required',
-                    'vendor_id' => 'required',
-                    'rfid_nr' => ['required',  Rule::unique('users','rfid_nr')->ignore($user->rfid_nr, 'rfid_nt')]
-                ]);
-            }
-            else {
-                $form = $request -> validate([
-                    'name' => 'required',
-                    'email' => ['required', Rule::unique('users','email')->ignore($user->email, 'email')],
-                    'role_id' => 'required',
-                    'vendor_id' => 'required',
-                    'rfid_nr' => ['required', Rule::unique('users','rfid_nr')->ignore($user->rfid_nr, 'rfid_nt')]
-                ]);
+                if($role->pin_needed | $role->password_needed)
+                {
+                    $form = $request -> validate([
+                        'name' => 'required',
+                        'email' => ['required', Rule::unique('users','email')->ignore($user->email, 'email')],
+                        'role_id'   => 'required',
+                        'vendor_id' => 'required',
+                        'rfid_nr' => ['required',  Rule::unique('users','rfid_nr')->ignore($user->rfid_nr, 'rfid_nr')]
+                    ]);
+                    $form['password'] = bcrypt('temp');
+                    $role = Role::find($request->get('role_id'));
+                    $vendor = Vendor::find($request->get('vendor_id'));
+                    $user->role()->associate($role)->save();
+                    $user->vendor()->associate($vendor)->save();
+                    $user->update($form);
+    
+                    return redirect()->route('PASSWORD_USER', [$user]);
+                }
+                else
+                {
+                    $form = $request -> validate([
+                        'name' => 'required',
+                        'email' => ['required', Rule::unique('users','email')->ignore($user->email, 'email')],
+                        'vendor_id' => 'required',
+                        'role_id' => ['required','numeric'],
+                        'rfid_nr' => ['required',  Rule::unique('users','rfid_nr')->ignore($user->rfid_nr, 'rfid_nr')]
+                    ]);
+        
+                    $form['password'] = bcrypt('no_password');
+                    $role = Role::find($request->get('role_id'));
+                    $vendor = Vendor::find($request->get('vendor_id'));
+                    $user->role()->associate($role)->save();
+                    $user->vendor()->associate($vendor)->save();
+                    $user->update($form);
+
+                    return redirect(route('LIST_USERS'));
+        
+                }      
             }
         }
         else
@@ -168,11 +198,11 @@ class UserController extends Controller
             'email' => ['required', Rule::unique('users','email')->ignore($user->email, 'email')],
             'role_id' => 'required',
             'vendor_id' => 'required',
-            'rfid_nr' => ['required', Rule::unique('users','rfid_nr')->ignore($user->rfid_nr, 'rfid_nt')]
+            'rfid_nr' => ['required', Rule::unique('users','rfid_nr')->ignore($user->rfid_nr, 'rfid_nr')]
         ]);
      }
         $role = Role::find($request->get('role_id'));
-        $vendor = Role::find($request->get('vendor_id'));
+        $vendor = Vendor::find($request->get('vendor_id'));
         $user->role()->associate($role)->save();
         $user->vendor()->associate($vendor)->save();
         $user->update($form);

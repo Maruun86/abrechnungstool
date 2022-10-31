@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->integer("preis");
+            $table->double("preis");
             $table->text('desciption')->default('');
             $table->foreignId('vat_id')->nullable()->constrained();
         });

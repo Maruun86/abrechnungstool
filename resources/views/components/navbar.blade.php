@@ -11,14 +11,24 @@
             <a class="nav-link active" aria-current="page" href="{{route('HOME')}}">Dashboard</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{route('LIST_EVENTS')}}">Events</a>
+            @can('list-events')
+              <a class="nav-link" href="{{route('LIST_EVENTS')}}">Events</a>
+            @endcan
+            @cannot('list-events')
+            <a class="nav-link text-muted" href="#">Events</a>
+            @endcannot
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Verwaltung
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li><a class="dropdown-item" href="{{route('LIST_USERS')}}">Benutzer</a></li>
+              @can('list-users')
+                <li><a class="dropdown-item" href="{{route('LIST_USERS')}}">Benutzer</a></li>
+              @endcan
+              @cannot('list-users')
+                <li><a class="dropdown-item text-muted" href="#">Benutzer</a></li>
+              @endcannot
               @can('list-items')
                 <li><a class="dropdown-item" href="{{route('LIST_ITEMS')}}">Items</a></li>
               @endcan

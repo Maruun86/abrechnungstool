@@ -1,17 +1,15 @@
 <x-layout>
-    <div class="container text-center">
-        <div>
-            <h1>{{$vendor->name}}</h1>
-        </div>
-        <div class="row">
-            @if ($vendor->items)
-            @foreach ($vendor->items as $item)
-                <x-item_card :item="$item"/>
-            @endforeach
-            @else
-            No Items found
+  
+    <div class="row  border">
+        <div class="col-8 border">
+            @if($vendor->items)
+                @foreach ($vendor->items as $item)
+                    <x-item_card :item="$item"/>
+                @endforeach
             @endif
         </div>
-      </div>
+        <x-cash_register/>
+
+    </div>
 </x-layout>
 

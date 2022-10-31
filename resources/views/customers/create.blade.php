@@ -2,7 +2,7 @@
     <a href="{{route('LIST_CUSTOMERS')}}"><button type="button" class="btn btn-primary">
         Zurück
     </button></a>
-    <div class="container bg-dark text-white">
+    <div class="container ">
         <form action="{{route('STORE_CUSTOMER')}}" method="POST">
             @csrf
             <label for="vorname">Vorname</label>

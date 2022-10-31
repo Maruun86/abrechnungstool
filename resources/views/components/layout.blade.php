@@ -10,7 +10,9 @@
       </form>
     <main>
         <!--Navbar is here-->
+        @can('show-dashboard')
         <x-navbar/>
+        @endcan
         {{$slot}}
     </main>
     </body>

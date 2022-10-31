@@ -338,10 +338,58 @@ class createPermissionsCommand extends Command
         }
         echo("Roles done....\n");
 
+        //------------------------------Users---------------------------------
+    
+        if(!Permission::where('gate_name', 'create-user')->first())
+        {
+            $permission = Permission::create([
+                'name' => 'Benutzer erstellen',
+                'gate_name' => 'create-user',
+                'description' => 'Erlaubt es dem Nutzer neue Benutzer zu erstellen'
+            ]);
+            echo("Gate:".$permission->gate_name." "."created\n");
+        }
+        if(!Permission::where('gate_name', 'edit-user')->first())
+        {
+            $permission = Permission::create([
+            'name' => 'Benutzer editieren',
+            'gate_name' => 'edit-user',
+            'description' => 'Erlaubt es dem Nutzer Benutzer zu editieren'
+            ]);
+            echo("Gate:".$permission->gate_name." "."created\n");
+        }
+        if(!Permission::where('gate_name', 'delete-user')->first())
+        {
+            $permission = Permission::create([
+                'name' => 'Benutzer löschen',
+                'gate_name' => 'delete-user',
+                'description' => 'Erlaubt es dem Nutzer Benutzer zu löschen'
+            ]);
+            echo("Gate:".$permission->gate_name." "."created\n");
+        }
+        if(!Permission::where('gate_name', 'list-users')->first())
+        {
+            $permission = Permission::create([
+                'name' => 'Alle Benutzer anzuzeigen',
+                'gate_name' => 'list-users',
+                'description' => 'Erlaubt es dem Nutzer die Benutzerliste zu sehen'
+            ]);
+            echo("Gate:".$permission->gate_name." "."created\n");
+        }
+        echo("Users done....\n");
 
 
 
-
+         //------------------------------Stuff---------------------------------
+        if(!Permission::where('gate_name', 'show-dashboard')->first())
+        {
+            $permission = Permission::create([
+                'name' => 'Zeigt das Dashboard an',
+                'gate_name' => 'show-dashboard',
+                'description' => 'Erlaubt es dem Nutzer das Dashboard zu nutzen'
+            ]);
+            echo("Gate:".$permission->gate_name." "."created\n");
+        }
 
 
 
@@ -356,8 +404,8 @@ class createPermissionsCommand extends Command
                 'pin_needed' => false,
                 'password_needed' => true
             ]);
-            echo($role->name."created\n");
-                //Has all Permissions
+            echo($role->name." created\n");
+            //Has all Permissions
             $permissions = Permission::all();
             foreach ($permissions as $permission) {
                 $role->permissions()->attach($permission);
@@ -377,6 +425,17 @@ class createPermissionsCommand extends Command
             $user->role()->associate($role)->save();
             echo($user->name." is now ".$role->name."\n");
             
+        }else{
+            $role = Role::where('name', 'SuperAdmin')->first();
+            $permissions = Permission::all();
+            foreach ($permissions as $permission) {
+                if(!$role->permissions->contains($permission))
+                {
+                    $role->permissions()->attach($permission);
+                    echo('Missing '.$permission->name." added to ".$role->gate_name."\n");
+                }
+            }
+        
         }
     }
 }

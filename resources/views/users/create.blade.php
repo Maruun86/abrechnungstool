@@ -1,19 +1,6 @@
-<x-layout>
-    <script type="text/javascript">
-        function RoleAuthTypeCheck() {
-            if (document.getElementById("YesPin").selected) {
-                document.getElementById("pin_needed").style.display = "block";
-            } else {
-                document.getElementById("pin_needed").style.display = "none";
-            }
-            if (document.getElementById("YesPassword").selected) {
-                document.getElementById("password_needed").style.display = "block";
-            } else {
-                document.getElementById("password_needed").style.display = "none";
-            }
-        }
-    </script>
-    
+<x-layout> 
+
+    </script>   
     <div class="container">
         <a href="{{route('LIST_USERS')}}"><button type="button" class="btn btn-primary">
             Zurück
@@ -23,29 +10,23 @@
             @csrf
             <label for="name">Name</label>
             <input type="text" id="name" name="name"><br>
-
             @if ($errors->has('name'))
                 <span class="text-danger">Name benötigt!</span><br>
             @endif
+
             <label for="email">E-Mail</label>
             <input type="email" id="email" name="email"><br>
             @if ($errors->has('email'))
                 <span class="text-danger">E-Mail benötigt!</span><br>
             @endif
+
             <label for="role_id">Rolle auswählen</label>
-            <select name="role_id" id="role_id" onchange="RoleAuthTypeCheck()">
-                <option  value='0'>Rolle auswählen</option>
+            <select name="role_id" id="role_id" >
+                <option  value='NULL'>Rolle auswählen</option>
                 @foreach ($roles as $role)
-                    @if ($role->pin_needed)
-                            <option id ='YesPin' value={{$role->id}}>{{$role->name}}</option>
-                    @elseif ($role->password_needed)
-                            <option id ='YesPassword' value={{$role->id}}>{{$role->name}}</option>
-                        @else
-                            <option value={{$role->id}}>{{$role->name}}</option>   
-                    @endif
+                        <option value={{$role->id}}>{{$role->name}}</option>  
                 @endforeach
             </select>
-            <br>
             <label for="vendor_id">Vendor auswählen</label>
             <select name="vendor_id" id="vendor_id">
                 <option value= 'NULL'>Kein Vendor</option>
@@ -53,27 +34,15 @@
                     <option value={{$vendor->id}}>{{$vendor->name}}</option>
                     @endforeach
             </select>
-            <div id='pin_needed' style='display: none'>
-                <label for="pin">5-Stelliger Pin</label>
-                <input type="pin" id="pin" name="pin">
-            </div>
-            @if ($errors->has('pin'))
-                <span class="text-danger">Ausgewählte Rolle braucht ein 5-stelligen Pin</span><br>
-            @endif
-            <div id='password_needed' style='display: none'>
-                <label for="password">Passwort:</label>
-                <input type="password" id="password" name="password">
-            </div>
-            @if ($errors->has('password'))
-                <span class="text-danger">Ausgewählte Rolle braucht ein Password</span><br>
-             @endif
-             <br>
             <label for="rfid_nr">RFID-Nr.</label>
-            <input type="text" id="rfid_nr" name="rfid_nr"><br>
+            <input type="text" id="rfid_nr" name="rfid_nr">
             @if ($errors->has('rfid_nr'))
-                <span class="text-danger">RIFD-Nummer benötigt!</span><br>
+                <span class="text-danger">RIFD-Nummer benötigt oder schon vorhanden!</span><br>
             @endif
+            <br>
+           
             <input type="submit" value='Hinzufügen'> 
+        </div>
         </form>
         
     </div>

@@ -33,6 +33,8 @@ Auth::routes();
 
 Route::controller(VendorController::class)->group(function () {
    
+    //Shop front of the Vendor for customers
+    Route::get('/events/{event}/vendors/{vendor}/shop','shop')->name('SHOP_VENDOR');
     //List Vendors
     Route::get('/vendors','list')->name('LIST_VENDORS')->middleware('can:list-vendors');
     //Create Vendor
@@ -48,6 +50,7 @@ Route::controller(VendorController::class)->group(function () {
     //update Vendor
     Route::get('/vendors/{vendor}/delete','destroy')->name('DESTROY_VENDOR')->middleware('can:delete-vendor');
 
+ 
 });
 
 Route::controller(LayoutsController::class)->group(function () {
@@ -98,20 +101,25 @@ Route::controller(CustomerController::class)->group(function () {
 
 });
 Route::controller(UserController::class)->group(function () {
+  
     //List Customers
-    Route::get('/users','list')->name('LIST_USERS');
+    Route::get('/users','list')->name('LIST_USERS')->middleware('can:list-users');
     //Create Customers
-    Route::get('/users/new','create')->name('CREATE_USER');
+    Route::get('/users/new','create')->name('CREATE_USER')->middleware('can:create-user');
+    //Addtional Authentifikatioenen
+    Route::get('/users/{user}/setAuth','password')->name('PASSWORD_USER')->middleware('can:create-user');
+    //Addtional Authentifikatioenen
+    Route::put('/users/{user}/setAuth','setpassword')->name('SET_PASSWORD_USER')->middleware('can:create-user');
     //Add Customers
-    Route::post('/users','store')->name('STORE_USER');
+    Route::post('/users','store')->name('STORE_USER')->middleware('can:create-user');
     //Edit Customers
-    Route::get('/users/{user}/edit','edit')->name('EDIT_USER');
+    Route::get('/users/{user}/edit','edit')->name('EDIT_USER')->middleware('can:edit-user');
     //Update Customers
-    Route::put('/users/{user}','update')->name('UPDATE_USER');
+    Route::put('/users/{user}','update')->name('UPDATE_USER')->middleware('can:create-user');
     //Toggle Customers
-    Route::get('/users/{user}/toggle','toggle')->name('TOGGLE_USER');
+    Route::get('/users/{user}/toggle','toggle')->name('TOGGLE_USER')->middleware('can:toggle-user');
     //Delete Customers
-    Route::get('/users/{user}/delete','destroy')->name('DESTROY_USER');
+    Route::get('/users/{user}/delete','destroy')->name('DESTROY_USER')->middleware('can:delete-user');
 
 
 });

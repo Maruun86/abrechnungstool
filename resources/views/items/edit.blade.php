@@ -11,7 +11,7 @@
             <label for="name">Name</label><br>
             <input type="text" id="name" name="name" value="{{$item->name}}"><br>
             <label for="preis">Preis</label><br>
-            <input type="number" id="preis" name="preis" value="{{$item->preis}}"><br>
+            <input type="number" step="0.01" id="preis" name="preis" value="{{$item->preis}}"><br>
             <label for="prozent_in_decimal">Vat auswählen</label>
             <select name="prozent_in_decimal" id="prozent_in_decimal">
                 @foreach ($vats as $vat)

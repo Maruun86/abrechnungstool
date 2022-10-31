@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Event;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -72,11 +73,18 @@ class LoginController extends Controller
             $credentials['email'] = $user->email; 
             $credentials['password'] = 'no_password'; 
             if((Auth::attempt($credentials))) {
-
-                $request->session()->regenerate();
-                return redirect('/home');
+                if($user->vendor)
+                {
+                    
+                    $event = Event::where('event_running', true)->first();
+                    $vendor = $user->vendor;
+                    return redirect()->route('SHOP_VENDOR', [$event, $vendor]);
+                }
+                else
+                {
+                    return redirect(route('HOME'));
+                }
             }
-
         }else
         {
             return redirect(route('login'));
@@ -99,9 +107,24 @@ class LoginController extends Controller
         if((Auth::attempt($credentials))) {
 
             $request->session()->regenerate();
-            return redirect('/home');
+            if($user->vendor)
+                {
+                    $event = Event::where('event_running', true)->first();
+                    if($event)
+                    {
+                        $vendor = $user->vendor;
+                        return redirect()->route('SHOP_VENDOR', [$event, $vendor]);
+                    }else
+                    {
+                        return redirect(route('HOME'));
+                    }
+                }
+                else
+                {
+                    return redirect(route('HOME'));
+                }
+           
         }
-        
         return back();
     }
 

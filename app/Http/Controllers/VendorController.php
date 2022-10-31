@@ -39,6 +39,20 @@ class VendorController extends Controller
         'vendor' => $vendor,
         ]);
     }
+
+    public function shop(Event $event , Vendor $vendor) {
+        $prefix = "vendor_layouts.";
+        $suffix = $vendor->layout->view_path;
+        $view = $prefix.$suffix;
+
+        
+        return view($view, [
+        'vendor' => $vendor,
+        'event' => $event
+        ]);
+    }
+
+
     /**
      * Shows a list of all ressources.
      *
@@ -90,13 +104,13 @@ class VendorController extends Controller
         $layout = Layout::where('name', $form['layout_id'])
             ->first();
         $form['layout_id'] = $layout->id;
-        $vendor = Vendor::create($form);
-
+        Vendor::create($form);
+        $vendor = Vendor::where('name', $form['name'])->first();
         foreach ($request->request as $key => $value ) {
+
             if($key !== '_token' && $key !== 'name' && $key !== 'layout_id')
             {
-                
-                $key = str_replace($key, '_', ' ');
+                $key = str_replace('_',' ', $key,);
                 $item = Item::where('name', $key)
                 ->first();
                 $vendor->items()->attach($item);
@@ -150,4 +164,5 @@ class VendorController extends Controller
         $vendor->delete();
         return redirect(route('LIST_VENDORS'));
     }
+
 }

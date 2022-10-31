@@ -199,6 +199,28 @@
                 </tr>
                 @endif  
             @endforeach
+            <tr><td colspan="3">---------------------------Kartegorie Benutzer--------------------</td> </tr>
+            @foreach ($perm_users as $permission)
+            @if ($role->hasPermission($permission))
+            <tr>
+                <td>
+                    <input type="checkbox" id="{{$permission->id}}" name="{{$permission->gate_name}}" value="true" checked>                    
+                </td>
+                <td>{{$permission->name}}</td>
+                <td>{{$permission->description}}</td>
+                <td>{{$permission->gate_name}}</td>
+            </tr>
+            @else
+            <tr>
+                <td>
+                    <input type="checkbox" id="{{$permission->id}}" name="{{$permission->gate_name}}" value="true">                    
+                </td>
+                <td>{{$permission->name}}</td>
+                <td>{{$permission->description}}</td>
+                <td>{{$permission->gate_name}}</td>
+            </tr>
+            @endif  
+            @endforeach
         </table>
             <input type="submit" value='Hinzufügen'> 
         </form>

@@ -2,9 +2,10 @@
     <a href="{{route('LIST_LAYOUTS')}}"><button type="button" class="btn btn-primary">
         Zurück
     </button></a>
-    <div class="container bg-dark text-white">
+    <div class="container">
         <form action="{{route('STORE_LAYOUT')}}" method="POST">
             @csrf
+            
             <label for="name">Layoutname</label><br>
             <input type="text" id="name" name="name"><br>
             <label for="view_path">View auswählen</label>

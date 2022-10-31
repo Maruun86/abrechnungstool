@@ -13,7 +13,7 @@
     <a href="{{route('LIST_EVENTS')}}"><button type="button" class="btn btn-primary">
         Zurück
     </button></a>
-    <div class="container bg-dark text-white">
+    <div class="container ">
         <form action="{{route('UPDATE_EVENT', $event)}}" method="POST">
             @csrf
             @method('put')

@@ -106,6 +106,17 @@
                     <td>{{$permission->gate_name}}</td>
                 </tr>
             @endforeach
+            <tr><td colspan="3">---------------------------Kartegorie Benutzer--------------------</td> </tr>
+            @foreach ($perm_users as $permission)
+                <tr>
+                    <td>
+                        <input type="checkbox" id="{{$permission->id}}" name="{{$permission->gate_name}}" value="true">                    
+                    </td>
+                    <td>{{$permission->name}}</td>
+                    <td>{{$permission->description}}</td>
+                    <td>{{$permission->gate_name}}</td>
+                </tr>
+            @endforeach
         </table>
             <input type="submit" value='Hinzufügen'> 
         </form>
