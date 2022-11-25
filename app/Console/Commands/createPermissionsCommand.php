@@ -393,9 +393,6 @@ class createPermissionsCommand extends Command
 
 
 
-
-
-
         if(!Role::where('name', 'SuperAdmin')->first())
         {
             //User and Role created
