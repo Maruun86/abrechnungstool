@@ -31,7 +31,8 @@ class RoleController extends Controller
             'perm_layouts' => Permission::where('gate_name','LIKE', '%'.'-layout'.'%')->get(),
             'perm_vats' => Permission::where('gate_name','LIKE', '%'.'-vat'.'%')->get(),
             'perm_events' => Permission::where('gate_name','LIKE', '%'.'-event'.'%')->get(),
-            'perm_roles' => Permission::where('gate_name','LIKE', '%'.'-role'.'%')->get()
+            'perm_roles' => Permission::where('gate_name','LIKE', '%'.'-role'.'%')->get(),
+            'perm_users' => Permission::where('gate_name','LIKE', '%'.'-user'.'%')->get()
         ]);
     }
 
